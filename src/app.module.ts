@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import envConfig from '@config/env';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from '@modules/users/user.module';
-
 import { WinstonModule, utilities as nestWinstonModuleUtilities } from 'nest-winston';
-
 import * as path from 'path';
 import * as winston from 'winston';
+import { UserModule } from '@modules/users/user.module';
+import { AuthModule } from '@modules/auth/auth.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,14 +28,15 @@ import * as winston from 'winston';
       type: 'postgres',
       host: process.env.DB_HOST,
       port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
-      username: process.env.DB_USERNAME,
+      username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
+      database: process.env.DB_NAME,
       synchronize: false,
       logging: true,
       entities: [path.join(__dirname, '**', '*.entity.{ts,js}')],
     }),
-    UserModule,
+    AuthModule,
+    UserModule
   ],
   controllers: [],
   providers: [],

@@ -1,8 +1,6 @@
-require('dotenv/config');
 const { User } = require('./src/shared/entities/user/user.entity');
-const { City } = require('./src/shared/entities/location/city.entity');
-const { State } = require('./src/shared/entities/location/state.entity');
 
+require('dotenv/config');
 
 module.exports = {
   type: 'postgres',
@@ -13,7 +11,9 @@ module.exports = {
   database: process.env.DB_NAME,
   synchronize: false,
   logging: true,
-  entities: [ 'dist/shared/entities/**/*.entity.js'],
+  entities: [ //'dist/shared/entities/**/*.entity.js'
+    User,
+  ],
   migrations: ['infra/typeorm/migrations/*.ts'],
   cli: {
     entitiesDir: 'src/shared/entities/',

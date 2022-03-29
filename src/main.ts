@@ -10,11 +10,11 @@ async function bootstrap() {
   const logger = new Logger('NestApplication');
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Project Name API')
+    .setTitle('ioasys camp - Desafio final')
     .setVersion('1')
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('api/docs', app, swaggerDocument);
+  SwaggerModule.setup('docs', app, swaggerDocument);
 
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
   
