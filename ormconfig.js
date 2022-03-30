@@ -1,4 +1,6 @@
 const { User } = require('./src/shared/entities/user/user.entity');
+const { City } = require('./src/shared/entities/location/city.entity');
+const { State } = require('./src/shared/entities/location/state.entity');
 
 require('dotenv/config');
 
@@ -13,6 +15,8 @@ module.exports = {
   logging: true,
   entities: [ //'dist/shared/entities/**/*.entity.js'
     User,
+    City,
+    State
   ],
   migrations: ['infra/typeorm/migrations/*.ts'],
   cli: {

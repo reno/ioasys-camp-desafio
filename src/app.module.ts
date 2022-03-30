@@ -7,6 +7,7 @@ import * as path from 'path';
 import * as winston from 'winston';
 import { UserModule } from '@modules/users/user.module';
 import { AuthModule } from '@modules/auth/auth.module';
+import { LocationModule } from '@modules/location/location.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { AuthModule } from '@modules/auth/auth.module';
       entities: [path.join(__dirname, '**', '*.entity.{ts,js}')],
     }),
     AuthModule,
+    LocationModule,
     UserModule
   ],
   controllers: [],

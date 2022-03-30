@@ -12,12 +12,18 @@ import { CreateUserDTO } from '@shared/dtos/user/createUser.dto';
 import { UpdateUserDTO } from '@shared/dtos/user/updateUser.dto';
 import { LoginDTO } from '@shared/dtos/auth/login.dto';
 import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provider';
+import { CityRepository } from '@modules/location/repository/city.repository';
+import { StateRepository } from '@modules/location/repository/state.repository';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
+    @InjectRepository(CityRepository)
+    private readonly cityRepository: CityRepository,
+    @InjectRepository(StateRepository)
+    private readonly stateRepository: StateRepository,
     private readonly encryptProvider: BcryptProvider,
   ) {}
 
@@ -48,13 +54,10 @@ export class UserService {
 
   async create(createUserDTO: CreateUserDTO): Promise<User> {
     if (await this._checkUnique(createUserDTO)) {
-      return await this.userRepository.createUser(createUserDTO);
-    }
-  }
-
-  async createAdmin(createUserDTO: CreateUserDTO): Promise<User> {
-    if (await this._checkUnique(createUserDTO)) {
-      return await this.userRepository.createAdmin(createUserDTO);
+      const { cityId, stateId } = createUserDTO;
+      const state = await this.stateRepository.findOne(stateId);
+      const city = await this.cityRepository.findOne(cityId);
+      return this.userRepository.createUser(createUserDTO, city, state);
     }
   }
 
