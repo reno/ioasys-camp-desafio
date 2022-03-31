@@ -66,16 +66,4 @@ export class UserController {
     const user = await this.userService.remove(id);
     return instanceToInstance(user);
   }
-
-  @Post('admin')
-  @UseGuards(AuthGuard('jwt'), AdminGuard)
-  @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse({ type: User })
-  @ApiBadRequestResponse({
-    description: 'This will be returned when has validation error',
-  })
-  public async createAdmin(@Body() createUserDTO: CreateUserDTO) {
-    const user = await this.userService.createAdmin(createUserDTO);
-    return instanceToInstance(user);
-  }
 }

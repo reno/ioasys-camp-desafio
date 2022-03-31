@@ -15,8 +15,8 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-//import { City } from '@shared/entities/location/city.entity';
-//import { State } from '@shared/entities/location/state.entity';
+import { City } from '@shared/entities/location/city.entity';
+import { State } from '@shared/entities/location/state.entity';
 
 
 export enum UserRole {
@@ -59,20 +59,17 @@ export class User {
   @Column({ type: 'varchar', nullable: false })
   public phone: string;
 
-  /*
   @ApiProperty()
-  @ManyToOne(() => State)
+  @ManyToOne(() => City, { nullable: false })
   @JoinColumn({ name: 'city_id' })
-  //@Transform(({ value }) => value.name)
-  city: State;
+  @Transform(({ value }) => value.name)
+  city: City;
 
-  
   @ApiProperty()
-  @ManyToOne(() => State)
+  @ManyToOne(() => State, { nullable: false })
   @JoinColumn({ name: 'state_id' })
-  //@Transform(({ value }) => value.name)
+  @Transform(({ value }) => value.name)
   state: State;
-  */
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
   public role: UserRole;

@@ -6,10 +6,12 @@ import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provide
 import { UserController } from '@modules/users/user.controller';
 import { UserService } from '@modules/users/user.service';
 import { UserRepository } from '@modules/users/repository/user.repository';
+import { CityRepository } from '@modules/location/repository/city.repository';
+import { StateRepository } from '@modules/location/repository/state.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([UserRepository, CityRepository, StateRepository]),
     BcryptProvider,
   ],
   providers: [

@@ -48,15 +48,13 @@ export class CreateUserDTO {
   @IsNotEmpty()
   public phone: string;
 
-  /*
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  public city_id: string;
+  public cityId: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  public state_id: string;
-  */
+  public stateId: string;
 }
