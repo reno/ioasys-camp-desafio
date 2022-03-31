@@ -19,7 +19,7 @@ export class State {
   public name: string;
 
   @ApiProperty()
-  @OneToMany(() => City, (city) => city.state)
+  @OneToMany(() => City, (city) => city.state, { cascade: ['insert'] })
   public cities: City[];
 
   @ApiProperty()

@@ -23,7 +23,10 @@
     "db:migration:generate": "yarn typeorm:cli migration:generate",
     "db:migration:create": "yarn typeorm:cli migration:create",
     "db:migrate": "yarn typeorm:cli migration:run",
-    "db:migration:revert": "yarn typeorm:cli migration:revert"
+    "db:migration:revert": "yarn typeorm:cli migration:revert",
+    "db:seed:create": "yarn typeorm:cli migration:create -c seed",
+    "db:seed:run": "yarn typeorm:cli migration:run -c seed",
+    "db:seed:revert": "yarn typeorm:cli migration:revert -c seed"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
