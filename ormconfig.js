@@ -7,11 +7,8 @@ require('dotenv/config');
 module.exports = [
   {
     type: 'postgres',
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    url: process.env.DATABASE_URL,
+    //use_env_variable: 'DATABASE_URL',
     synchronize: false,
     logging: true,
     entities: [ //'dist/shared/entities/**/*.entity.js'
@@ -24,24 +21,34 @@ module.exports = [
       entitiesDir: 'src/shared/entities/',
       migrationsDir: 'infra/typeorm/migrations',
     },
+    ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false
+        }
+      },
   },
   {
     name: 'seed',
     type: 'postgres',
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    url: process.env.DATABASE_URL,
+    //use_env_variable: 'DATABASE_URL',
     synchronize: false,
     entities: [ //'dist/shared/entities/**/*.entity.js'
       User,
       City,
       State
-    ],    migrations: ['infra/typeorm/seeds/*.ts'],
+    ],
+    migrations: ['infra/typeorm/seeds/*.ts'],
     cli: {
       migrationsDir: 'infra/typeorm/seeds',
-    }
-  }
+    },
+    ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false
+        }
+      },
+  },
 ]
 

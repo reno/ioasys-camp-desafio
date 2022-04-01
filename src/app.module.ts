@@ -8,6 +8,9 @@ import * as winston from 'winston';
 import { UserModule } from '@modules/users/user.module';
 import { AuthModule } from '@modules/auth/auth.module';
 import { LocationModule } from '@modules/location/location.module';
+import { State } from '@shared/entities/location/state.entity';
+import { City } from '@shared/entities/location/city.entity';
+import { User } from '@shared/entities/user/user.entity';
 
 @Module({
   imports: [
@@ -27,14 +30,19 @@ import { LocationModule } from '@modules/location/location.module';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST,
-      port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
+      url: process.env.DATABASE_URL,       
       synchronize: false,
-      logging: true,
-      entities: [path.join(__dirname, '**', '*.entity.{ts,js}')],
+      ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false
+        }
+      },
+      entities: [//[path.join(__dirname, '**', '*.entity.{ts,js}')],
+        State,
+        City,
+        User
+      ]
     }),
     AuthModule,
     LocationModule,
