@@ -47,9 +47,6 @@ import { MulterModule } from '@nestjs/platform-express';
         File
       ]
     }),
-    MulterModule.register({
-      dest: './files',
-    }),
     AuthModule,
     LocationModule,
     UserModule
