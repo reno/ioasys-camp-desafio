@@ -14,6 +14,7 @@ import { LoginDTO } from '@shared/dtos/auth/login.dto';
 import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provider';
 import { CityRepository } from '@modules/location/repository/city.repository';
 import { StateRepository } from '@modules/location/repository/state.repository';
+import { FilesService } from '@modules/files/files.service';
 
 @Injectable()
 export class UserService {
@@ -25,6 +26,7 @@ export class UserService {
     @InjectRepository(StateRepository)
     private readonly stateRepository: StateRepository,
     private readonly encryptProvider: BcryptProvider,
+    private readonly filesService: FilesService
   ) {}
 
   async findById(id : string): Promise<User> {
@@ -82,6 +84,16 @@ export class UserService {
     }
     await this.userRepository.softDelete({ id });
     return user;
+  }
+
+  async addAvatar(userId: string, imageBuffer: Buffer, filename: string) {
+    const avatar = await this.filesService.upload(imageBuffer, filename);
+    const user = await this.findById(userId);
+    await this.userRepository.update(userId, {
+      ...user,
+      avatar
+    });
+    return avatar;
   }
 
   private async _checkUnique(createUserDTO: CreateUserDTO): Promise<Boolean> {

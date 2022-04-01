@@ -14,10 +14,11 @@ import {
   BeforeInsert,
   ManyToOne,
   JoinColumn,
+  OneToOne,
 } from 'typeorm';
 import { City } from '@shared/entities/location/city.entity';
 import { State } from '@shared/entities/location/state.entity';
-
+import { File } from '@shared/entities/file/file.entity';
 
 export enum UserRole {
   ADMIN = "admin",
@@ -71,12 +72,20 @@ export class User {
   @Transform(({ value }) => value.name)
   state: State;
 
+  @ApiProperty()
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
   public role: UserRole;
 
+  @ApiProperty()
   @Column({ name: 'is_active', type: 'boolean', default: false })
   public isActive: boolean
 
+  @ApiProperty()
+  @JoinColumn({ name: 'avatar_id' })
+  @OneToOne(() => File, { eager: true, nullable: true })
+  public avatar?: File;
+
+  @ApiProperty()
   @ApiProperty()
   @CreateDateColumn({ name: 'created_at' })
   public createdAt: Date;

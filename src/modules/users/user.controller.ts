@@ -8,7 +8,9 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -23,6 +25,8 @@ import { User } from '@shared/entities/user/user.entity';
 import { UserService } from './user.service';
 import { CreateUserDTO } from '@shared/dtos/user/createUser.dto';
 import { UpdateUserDTO } from '@shared/dtos/user/updateUser.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UserFromRequest } from '@shared/decorators/user.decorator';
 
 @ApiTags('Users')
 @Controller('users')
@@ -65,5 +69,12 @@ export class UserController {
   async delete(@Param('id') id: string) {
     const user = await this.userService.remove(id);
     return instanceToInstance(user);
+  }
+
+  @Post('avatar')
+  @UseGuards(AuthGuard('jwt'))
+  @UseInterceptors(FileInterceptor('file'))
+  async addAvatar(@UserFromRequest() user: User, @UploadedFile() file: any) {
+    return this.userService.addAvatar(user.id, file.buffer, file.originalname);
   }
 }
