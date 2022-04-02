@@ -87,13 +87,32 @@ export class UserService {
   }
 
   async addAvatar(userId: string, imageBuffer: Buffer, filename: string) {
-    const avatar = await this.filesService.upload(imageBuffer, filename);
     const user = await this.findById(userId);
+    if (user.avatar) {
+      await this.userRepository.update(userId, {
+        ...user,
+        avatar: null
+      });
+      await this.filesService.delete(user.avatar.id);
+    }
+    const avatar = await this.filesService.upload(imageBuffer, filename);
     await this.userRepository.update(userId, {
       ...user,
       avatar
     });
     return avatar;
+  }
+
+  async deleteAvatar(userId: string) {
+    const user = await this.findById(userId);
+    const fileId = user.avatar?.id;
+    if (fileId) {
+      await this.userRepository.update(userId, {
+        ...user,
+        avatar: null
+      });
+      await this.filesService.delete(fileId)
+    }
   }
 
   private async _checkUnique(createUserDTO: CreateUserDTO): Promise<Boolean> {

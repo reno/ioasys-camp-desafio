@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { S3 } from 'aws-sdk';
 import { v4 as uuid } from 'uuid';
-import { File } from '@shared/entities/file/file.entity';
 import envVariables from '@config/env';
 import { FileRepository } from './repository/file.repository';
 
@@ -29,5 +27,15 @@ export class FilesService {
     });
     await this.fileRepository.save(newFile);
     return newFile;
+  }
+
+  async delete(id: string) {
+    const file = await this.fileRepository.findOne({ id });
+    const s3 = new S3();
+    await s3.deleteObject({
+      Bucket: envVariables().awsBucketName,
+      Key: file.key,
+    }).promise();
+    await this.fileRepository.delete(id);
   }
 }
