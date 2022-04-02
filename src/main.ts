@@ -2,6 +2,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { config } from 'aws-sdk';
 import envVariables from '@config/env';
 
 async function bootstrap() {
@@ -18,6 +19,12 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
   
+  config.update({
+    accessKeyId: envVariables().awsAccessKey,
+    secretAccessKey: envVariables().awsSecretKey,
+    region: envVariables().awsRegion,
+  });
+
   await app.listen(envVariables().port, () =>
     logger.log(`API is running on port ${envVariables().port}`),
   );

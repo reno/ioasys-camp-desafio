@@ -8,15 +8,25 @@ import { UserService } from '@modules/users/user.service';
 import { UserRepository } from '@modules/users/repository/user.repository';
 import { CityRepository } from '@modules/location/repository/city.repository';
 import { StateRepository } from '@modules/location/repository/state.repository';
+import { FilesService } from '@modules/files/files.service';
+import { FileRepository } from '@modules/files/repository/file.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserRepository, CityRepository, StateRepository]),
+    TypeOrmModule.forFeature(
+      [
+        UserRepository,
+        CityRepository,
+        StateRepository,
+        FileRepository
+      ]
+    ),
     BcryptProvider,
   ],
   providers: [
     BcryptProvider,
     UserService,
+    FilesService
   ],
   controllers: [UserController],
   exports: [UserService]
