@@ -73,7 +73,7 @@ export class UserController {
   }
 
   @Post('avatar')
-  //@ApiCreatedResponse({ type: File })
+  @ApiCreatedResponse({ type: File })
   @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(FileInterceptor('file'))
   async addAvatar(@UserFromRequest() user: User, @UploadedFile() file: Express.Multer.File) {
