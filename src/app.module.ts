@@ -12,8 +12,9 @@ import { State } from '@shared/entities/location/state.entity';
 import { City } from '@shared/entities/location/city.entity';
 import { User } from '@shared/entities/user/user.entity';
 import { File } from '@shared/entities/file/file.entity';
-import { MulterModule } from '@nestjs/platform-express';
-
+import { Subject } from '@shared/entities/subject/subject.entity';
+import { Thread } from '@shared/entities/thread/thread.entity';
+import { Comment } from '@shared/entities/comment/comment.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -44,7 +45,10 @@ import { MulterModule } from '@nestjs/platform-express';
         State,
         City,
         User, 
-        File
+        File, 
+        Subject,
+        Thread,
+        Comment
       ]
     }),
     AuthModule,
