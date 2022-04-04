@@ -15,6 +15,7 @@ import { File } from '@shared/entities/file/file.entity';
 import { Subject } from '@shared/entities/subject/subject.entity';
 import { Thread } from '@shared/entities/thread/thread.entity';
 import { Comment } from '@shared/entities/comment/comment.entity';
+import { SubjectModule } from '@modules/subjects/subject.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -53,7 +54,8 @@ import { Comment } from '@shared/entities/comment/comment.entity';
     }),
     AuthModule,
     LocationModule,
-    UserModule
+    UserModule,
+    SubjectModule
   ],
   controllers: [],
   providers: [],
