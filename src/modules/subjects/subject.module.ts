@@ -5,10 +5,15 @@ import { SubjectController } from '@modules/subjects/subject.controller';
 import { SubjectService } from '@modules/subjects/subject.service';
 import { FileRepository } from '@modules/files/repository/file.repository';
 import { FilesService } from '@modules/files/files.service';
+import { ThreadRepository } from '@modules/threads/repository/thread.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ SubjectRepository, FileRepository ]),
+    TypeOrmModule.forFeature([
+      SubjectRepository,
+      FileRepository,
+      ThreadRepository
+    ]),
   ],
   controllers: [SubjectController],
   providers: [SubjectService, FilesService]

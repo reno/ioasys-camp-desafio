@@ -9,8 +9,10 @@ import {
   DeleteDateColumn,
   JoinColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 import { File } from '@shared/entities/file/file.entity';
+import { Thread } from '@shared/entities/thread/thread.entity'
 
 @Entity('subjects', {
   orderBy: {
@@ -32,12 +34,18 @@ export class Subject {
   public picture: File;
 
   @ApiProperty()
+  @OneToMany(() => Thread, (thread) => thread.subject)
+  public threads: Thread[];
+
+  @ApiProperty()
   @ApiProperty()
   @CreateDateColumn({ name: 'created_at' })
+  @Exclude()
   public createdAt: Date;
 
   @ApiProperty()
   @UpdateDateColumn({ name: 'updated_at' })
+  @Exclude()
   public updatedAt: Date;
 
   @ApiProperty()

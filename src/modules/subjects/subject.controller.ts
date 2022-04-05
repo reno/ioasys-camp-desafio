@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -28,6 +29,9 @@ import { UserFromRequest } from '@shared/decorators/user.decorator';
 import { Subject } from '@shared/entities/subject/subject.entity';
 import { CreateSubjectDTO } from '@shared/dtos/subject/createSubject.dto';
 import { UpdateSubjectDTO } from '@shared/dtos/subject/updateSubject.dto';
+import { PageOptionsDTO } from '@shared/dtos/page/pageOptions.dto';
+import { PageDTO } from '@shared/dtos/page/page.dto';
+import { ThreadListDTO } from '@shared/dtos/thread/threadList.dto';
 
 @ApiTags('Subjects')
 @Controller('subjects')
@@ -38,6 +42,14 @@ export class SubjectController {
   async findAll() {
     const subjects = await this.subjectService.findAll();
     return subjects.map(subject => instanceToInstance(subject));
+  }
+
+  @Get(':id')
+  async findOne(
+    @Param('id') id: string,
+    @Query() pageOptionsDTO: PageOptionsDTO,
+  ): Promise<PageDTO<ThreadListDTO>> {
+    return this.subjectService.findOne(id, pageOptionsDTO);
   }
 
   @Post()

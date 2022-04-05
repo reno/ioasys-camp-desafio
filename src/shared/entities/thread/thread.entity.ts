@@ -9,9 +9,11 @@ import {
   DeleteDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Subject } from '@shared/entities/subject/subject.entity';
 import { User } from '@shared/entities/user/user.entity';
+import { Comment } from '@shared/entities/comment/comment.entity';
 
 @Entity('threads', {
   orderBy: {
@@ -31,7 +33,7 @@ export class Thread {
   @Column({ type: 'varchar', nullable: false })
   public content: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: () => Subject })
   @ManyToOne(() => Subject, { nullable: false })
   @JoinColumn({ name: 'subject_id' })
   @Transform(({ value }) => value.name)
@@ -41,6 +43,10 @@ export class Thread {
   @ManyToOne(() => User, { eager: true, nullable: false })
   @JoinColumn({ name: 'user_id' })
   public user: User;
+
+  @ApiProperty()
+  @OneToMany(() => Comment, (comment) => comment.thread)
+  public comments: Comment[];
 
   @ApiProperty()
   @ApiProperty()

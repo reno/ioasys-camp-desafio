@@ -74,10 +74,12 @@ export class User {
 
   @ApiProperty()
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
+  @Exclude()
   public role: UserRole;
 
   @ApiProperty()
   @Column({ name: 'is_active', type: 'boolean', default: false })
+  @Exclude()
   public isActive: boolean
 
   @ApiProperty()
@@ -88,10 +90,12 @@ export class User {
   @ApiProperty()
   @ApiProperty()
   @CreateDateColumn({ name: 'created_at' })
+  @Exclude()
   public createdAt: Date;
 
   @ApiProperty()
   @UpdateDateColumn({ name: 'updated_at' })
+  @Exclude()
   public updatedAt: Date;
 
   @ApiProperty()
