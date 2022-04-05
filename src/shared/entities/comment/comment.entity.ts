@@ -27,7 +27,7 @@ export class Comment {
   @Column({ type: 'varchar', nullable: false })
   public content: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: () => Thread })
   @ManyToOne(() => Thread, { nullable: false })
   @JoinColumn({ name: 'thread_id' })
   @Transform(({ value }) => value.id)

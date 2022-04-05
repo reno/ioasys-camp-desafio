@@ -17,6 +17,7 @@ import { Thread } from '@shared/entities/thread/thread.entity';
 import { Comment } from '@shared/entities/comment/comment.entity';
 import { SubjectModule } from '@modules/subjects/subject.module';
 import { ThreadModule } from '@modules/threads/thread.module';
+import { CommentModule } from '@modules/comments/comment.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -57,7 +58,8 @@ import { ThreadModule } from '@modules/threads/thread.module';
     LocationModule,
     UserModule,
     SubjectModule,
-    ThreadModule
+    ThreadModule,
+    CommentModule
   ],
   controllers: [],
   providers: [],
