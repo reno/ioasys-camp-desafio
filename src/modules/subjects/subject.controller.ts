@@ -32,6 +32,8 @@ import { UpdateSubjectDTO } from '@shared/dtos/subject/updateSubject.dto';
 import { PageOptionsDTO } from '@shared/dtos/page/pageOptions.dto';
 import { PageDTO } from '@shared/dtos/page/page.dto';
 import { ThreadListDTO } from '@shared/dtos/thread/threadList.dto';
+import { SubjectListDTO } from '@shared/dtos/subject/subjectList.dto';
+import { Thread } from '@shared/entities/thread/thread.entity';
 
 @ApiTags('Subjects')
 @Controller('subjects')
@@ -41,7 +43,11 @@ export class SubjectController {
   @Get()
   async findAll() {
     const subjects = await this.subjectService.findAll();
-    return subjects.map(subject => instanceToInstance(subject));
+    return await Promise.all(subjects.map(async (subject) => {
+      const response = SubjectListDTO.fromEntity(subject);
+      response.threadCount = await this.subjectService.getThreadCount(subject.id);
+      return response;
+    }));
   }
 
   @Get(':id')
