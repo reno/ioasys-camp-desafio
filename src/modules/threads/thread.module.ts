@@ -6,6 +6,7 @@ import { ThreadController } from '@modules/threads/thread.controller';
 import { ThreadService } from '@modules/threads/thread.service';
 import { SubjectRepository } from '@modules/subjects/repository/subject.repository';
 import { CommentRepository } from '@modules/comments/repository/comment.repository';
+import { CommentModule } from '@modules/comments/comment.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { CommentRepository } from '@modules/comments/repository/comment.reposito
     ]),
   ],
   controllers: [ThreadController],
-  providers: [ThreadService]
+  providers: [ThreadService],
+  exports: [ThreadService]
 })
 export class ThreadModule {}

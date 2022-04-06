@@ -35,9 +35,8 @@ export class ThreadController {
   constructor(private readonly threadService: ThreadService) {}
 
   @Get(':id')
-  public async findOne(@Param('id') id: string): Promise<Thread> {
-    const thread = await this.threadService.findOne(id);
-    return instanceToInstance(thread);
+  public async findOne(@Param('id') id: string): Promise<ThreadListDTO> {
+    return await this.threadService.findOne(id);
   }
 
   @Post()
