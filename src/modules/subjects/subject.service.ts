@@ -13,6 +13,7 @@ import { instanceToInstance } from 'class-transformer';
 import { Thread } from '@shared/entities/thread/thread.entity';
 import { ThreadListDTO } from '@shared/dtos/thread/threadList.dto';
 import { ThreadService } from '@modules/threads/thread.service';
+import { RecentThreadsDTO } from '@shared/dtos/thread/recentThreads.dto';
 
 @Injectable()
 export class SubjectService {
@@ -29,7 +30,7 @@ export class SubjectService {
       return await this.subjectRepository.find();
   }
 
-  async findOne(id: string, pageOptionsDTO: PageOptionsDTO): Promise<PageDTO<ThreadListDTO>> {
+  async findOne(id: string, pageOptionsDTO: PageOptionsDTO): Promise<PageDTO<RecentThreadsDTO>> {
     const queryBuilder = this.threadRepository.createQueryBuilder("thread");
     queryBuilder
       .leftJoinAndSelect('thread.user', 'user')
@@ -40,7 +41,7 @@ export class SubjectService {
     const itemCount = await queryBuilder.getCount();
     let { entities } = await queryBuilder.getRawAndEntities();
     const threads = await Promise.all(entities.map(async (entity) => {
-      const response = ThreadListDTO.fromEntity(entity);
+      const response = RecentThreadsDTO.fromEntity(entity);
       response.commentCount = await this.threadService.getCommentCount(entity.id);
       return response;
     }));
