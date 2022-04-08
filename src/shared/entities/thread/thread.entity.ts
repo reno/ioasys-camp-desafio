@@ -10,6 +10,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  Index,
 } from 'typeorm';
 import { Subject } from '@shared/entities/subject/subject.entity';
 import { User } from '@shared/entities/user/user.entity';
@@ -27,10 +28,12 @@ export class Thread {
 
   @ApiProperty()
   @Column({ type: 'varchar', nullable: false })
+  @Index({ fulltext: true })
   public title: string;
 
   @ApiProperty()
   @Column({ type: 'varchar', nullable: false })
+  @Index({ fulltext: true })
   public content: string;
 
   @ApiProperty({ type: () => Subject })
