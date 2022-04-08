@@ -18,6 +18,7 @@ import { Comment } from '@shared/entities/comment/comment.entity';
 import { SubjectModule } from '@modules/subjects/subject.module';
 import { ThreadModule } from '@modules/threads/thread.module';
 import { CommentModule } from '@modules/comments/comment.module';
+import { SearchModule } from '@modules/search/search.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -38,6 +39,7 @@ import { CommentModule } from '@modules/comments/comment.module';
       type: 'postgres',
       url: process.env.DATABASE_URL,       
       synchronize: false,
+      logging: true,
       ssl: true,
       extra: {
         ssl: {
@@ -59,7 +61,8 @@ import { CommentModule } from '@modules/comments/comment.module';
     UserModule,
     SubjectModule,
     ThreadModule,
-    CommentModule
+    CommentModule,
+    SearchModule
   ],
   controllers: [],
   providers: [],

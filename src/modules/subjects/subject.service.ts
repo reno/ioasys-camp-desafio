@@ -10,6 +10,10 @@ import { ThreadRepository } from '@modules/threads/repository/thread.repository'
 import { PageMetaDTO } from '@shared/dtos/page/meta.dto';
 import { PageDTO } from '@shared/dtos/page/page.dto';
 import { instanceToInstance } from 'class-transformer';
+import { Thread } from '@shared/entities/thread/thread.entity';
+import { ThreadListDTO } from '@shared/dtos/thread/threadList.dto';
+import { ThreadService } from '@modules/threads/thread.service';
+import { RecentThreadsDTO } from '@shared/dtos/thread/recentThreads.dto';
 
 @Injectable()
 export class SubjectService {
@@ -18,32 +22,38 @@ export class SubjectService {
     private readonly subjectRepository: SubjectRepository,
     @InjectRepository(ThreadRepository)
     private readonly threadRepository: ThreadRepository,
-    private readonly filesService: FilesService
+    private readonly filesService: FilesService,
+    private readonly threadService: ThreadService
   ) {}
 
-  async findAll() {
+  async findAll(): Promise<Subject[]> {
       return await this.subjectRepository.find();
   }
 
-  async findOne(id: string, pageOptionsDTO: PageOptionsDTO) {
+  async findOne(id: string, pageOptionsDTO: PageOptionsDTO): Promise<PageDTO<RecentThreadsDTO>> {
     const queryBuilder = this.threadRepository.createQueryBuilder("thread");
     queryBuilder
+      .leftJoinAndSelect('thread.user', 'user')
       .where("thread.subject = :subject", { subject: id })
       .orderBy("thread.createdAt", pageOptionsDTO.order)
       .skip(pageOptionsDTO.skip)
       .take(pageOptionsDTO.take);
     const itemCount = await queryBuilder.getCount();
     let { entities } = await queryBuilder.getRawAndEntities();
-    entities = instanceToInstance(entities);
+    const threads = await Promise.all(entities.map(async (entity) => {
+      const response = RecentThreadsDTO.fromEntity(entity);
+      response.commentCount = await this.threadService.getCommentCount(entity.id);
+      return response;
+    }));
+
     const pageMetaDto = new PageMetaDTO({ itemCount, pageOptionsDTO });
-    return new PageDTO(entities, pageMetaDto);
+    return new PageDTO(threads, pageMetaDto);
   }
 
-  async create(createSubjectDTO: CreateSubjectDTO) {
+  async create(createSubjectDTO: CreateSubjectDTO): Promise<Subject> {
     const subject = await this.subjectRepository.create(createSubjectDTO);
     return await this.subjectRepository.save(subject);
   }
-
   
   async update(id: string, updateSubjectDTO: UpdateSubjectDTO): Promise<Subject> {
     let subject = await this.subjectRepository.findOne(id);
@@ -89,4 +99,9 @@ export class SubjectService {
     }
   }
 
+  async getThreadCount(subjectId: string): Promise<number> {
+    const queryBuilder = this.threadRepository.createQueryBuilder('thread');
+    queryBuilder.where('thread.subject = :subject', { subject: subjectId })
+    return await queryBuilder.getCount();
+  }
 }

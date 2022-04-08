@@ -13,7 +13,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PageDTO } from '@shared/dtos/page/page.dto';
 import { PageMetaDTO } from '@shared/dtos/page/meta.dto';
 import { PageOptionsDTO } from '@shared/dtos/page/pageOptions.dto';
@@ -27,6 +27,7 @@ import { UserFromRequest } from '@shared/decorators/user.decorator';
 import { User } from '@shared/entities/user/user.entity';
 import { UpdateThreadDTO } from '@shared/dtos/thread/updateThread.dto';
 import { ThreadAuthorGuard } from '@shared/guards/threadAuthor.guard';
+import { RecentThreadsDTO } from '@shared/dtos/thread/recentThreads.dto';
 
 @ApiTags('Threads')
 @Controller('threads')
@@ -34,10 +35,15 @@ import { ThreadAuthorGuard } from '@shared/guards/threadAuthor.guard';
 export class ThreadController {
   constructor(private readonly threadService: ThreadService) {}
 
+  @Get()
+  @ApiOperation({ summary: '(Most recent threads from all subjects)' })
+  public async findAll(@Query() pageOptionsDTO: PageOptionsDTO): Promise<PageDTO<RecentThreadsDTO>> {
+    return await this.threadService.findAll(pageOptionsDTO);
+  }
+
   @Get(':id')
-  public async findOne(@Param('id') id: string): Promise<Thread> {
-    const thread = await this.threadService.findOne(id);
-    return instanceToInstance(thread);
+  public async findOne(@Param('id') id: string): Promise<ThreadListDTO> {
+    return await this.threadService.findOne(id);
   }
 
   @Post()

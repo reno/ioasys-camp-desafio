@@ -1,24 +1,25 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThreadRepository } from '@modules/threads/repository/thread.repository';
-import { UserRepository } from '@modules/users/repository/user.repository';
-import { ThreadController } from '@modules/threads/thread.controller';
+import { CommentRepository } from '@modules/comments/repository/comment.repository';
+import { SearchService } from '@modules/search/search.service';
+import { SearchController } from '@modules/search/search.controller';
 import { ThreadService } from '@modules/threads/thread.service';
 import { SubjectRepository } from '@modules/subjects/repository/subject.repository';
-import { CommentRepository } from '@modules/comments/repository/comment.repository';
-import { CommentModule } from '@modules/comments/comment.module';
+import { UserRepository } from '@modules/users/repository/user.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       ThreadRepository,
-      SubjectRepository,
       CommentRepository,
+      SubjectRepository,
       UserRepository
     ]),
   ],
-  controllers: [ThreadController],
-  providers: [ThreadService],
-  exports: [ThreadService]
+  controllers: [SearchController],
+  providers: [SearchService, ThreadService]
 })
-export class ThreadModule {}
+export class SearchModule {}
+
+

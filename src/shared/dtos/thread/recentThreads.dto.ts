@@ -3,7 +3,7 @@ import { Thread } from '@shared/entities/thread/thread.entity';
 import { User } from '@shared/entities/user/user.entity';
 import { instanceToInstance } from 'class-transformer';
 
-export class ThreadListDTO {
+export class RecentThreadsDTO {
 
   @ApiProperty()
   public id: string;
@@ -15,6 +15,9 @@ export class ThreadListDTO {
   public content: string;
 
   @ApiProperty()
+  public subject: string;
+
+  @ApiProperty()
   public user: User;
 
   @ApiProperty()
@@ -23,11 +26,12 @@ export class ThreadListDTO {
   @ApiProperty()
   public commentCount: number;
 
-  static fromEntity(thread: Thread): ThreadListDTO {
-    const dto = new ThreadListDTO();
+  static fromEntity(thread: Thread): RecentThreadsDTO {
+    const dto = new RecentThreadsDTO();
     dto.id = thread.id;
     dto.title = thread.title;
     dto.content = thread.content;
+    dto.subject = thread.subject.name;
     dto.user = instanceToInstance(thread.user);
     dto.createdAt = thread.createdAt;
     dto.commentCount = null;
