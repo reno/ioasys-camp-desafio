@@ -30,7 +30,7 @@ export class SubjectService {
       return await this.subjectRepository.find();
   }
 
-  async findOne(id: string, pageOptionsDTO: PageOptionsDTO): Promise<PageDTO<RecentThreadsDTO>> {
+  async findOne(id: string, pageOptionsDTO: PageOptionsDTO): Promise<PageDTO<ThreadListDTO>> {
     const queryBuilder = this.threadRepository.createQueryBuilder("thread");
     queryBuilder
       .leftJoinAndSelect('thread.user', 'user')
@@ -41,7 +41,7 @@ export class SubjectService {
     const itemCount = await queryBuilder.getCount();
     let { entities } = await queryBuilder.getRawAndEntities();
     const threads = await Promise.all(entities.map(async (entity) => {
-      const response = RecentThreadsDTO.fromEntity(entity);
+      const response = ThreadListDTO.fromEntity(entity);
       response.commentCount = await this.threadService.getCommentCount(entity.id);
       return response;
     }));
