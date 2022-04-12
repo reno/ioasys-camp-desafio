@@ -21,6 +21,7 @@ export class SearchService {
 
   async find(query: string, pageOptionsDTO: PageOptionsDTO) {
     let queryBuilder = await this.threadRepository.createQueryBuilder('thread')
+      .leftJoinAndSelect('thread.user', 'user')
       .leftJoin('thread.comments', 'comments')
       .where(`to_tsvector(thread.title) @@ to_tsquery(:query)`, { query })
       .orWhere(`to_tsvector(thread.content) @@ to_tsquery(:query)`, { query })
