@@ -34,7 +34,7 @@ import { PageDTO } from '@shared/dtos/page/page.dto';
 import { ThreadListDTO } from '@shared/dtos/thread/threadList.dto';
 import { SubjectListDTO } from '@shared/dtos/subject/subjectList.dto';
 import { Thread } from '@shared/entities/thread/thread.entity';
-
+import { ThreadFilterDTO } from '@shared/dtos/filter/threadFilter.dto';
 @ApiTags('Subjects')
 @Controller('subjects')
 export class SubjectController {
@@ -53,9 +53,9 @@ export class SubjectController {
   @Get(':id')
   async findOne(
     @Param('id') id: string,
-    @Query() pageOptionsDTO: PageOptionsDTO,
+    @Query() filters: ThreadFilterDTO,
   ): Promise<PageDTO<ThreadListDTO>> {
-    return this.subjectService.findOne(id, pageOptionsDTO);
+    return this.subjectService.findOne(id, filters);
   }
 
   @Post()

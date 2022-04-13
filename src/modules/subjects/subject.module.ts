@@ -12,6 +12,7 @@ import { CommentModule } from '@modules/comments/comment.module';
 import { ThreadModule } from '@modules/threads/thread.module';
 import { CommentRepository } from '@modules/comments/repository/comment.repository';
 import { UserRepository } from '@modules/users/repository/user.repository';
+import { CityRepository } from '@modules/location/repository/city.repository';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { UserRepository } from '@modules/users/repository/user.repository';
       FileRepository,
       ThreadRepository,
       CommentRepository,
-      UserRepository
+      UserRepository,
+      CityRepository,
     ]),
   ],
   controllers: [SubjectController],

@@ -5,15 +5,13 @@ import { CreateSubjectDTO } from '@shared/dtos/subject/createSubject.dto';
 import { FilesService } from '@modules/files/files.service';
 import { UpdateSubjectDTO } from '@shared/dtos/subject/updateSubject.dto';
 import { Subject } from '@shared/entities/subject/subject.entity';
-import { PageOptionsDTO } from '@shared/dtos/page/pageOptions.dto';
 import { ThreadRepository } from '@modules/threads/repository/thread.repository';
 import { PageMetaDTO } from '@shared/dtos/page/meta.dto';
 import { PageDTO } from '@shared/dtos/page/page.dto';
-import { instanceToInstance } from 'class-transformer';
-import { Thread } from '@shared/entities/thread/thread.entity';
 import { ThreadListDTO } from '@shared/dtos/thread/threadList.dto';
 import { ThreadService } from '@modules/threads/thread.service';
-import { RecentThreadsDTO } from '@shared/dtos/thread/recentThreads.dto';
+import { ThreadFilterDTO } from '@shared/dtos/filter/threadFilter.dto';
+import { CityRepository } from '@modules/location/repository/city.repository';
 
 @Injectable()
 export class SubjectService {
@@ -22,6 +20,8 @@ export class SubjectService {
     private readonly subjectRepository: SubjectRepository,
     @InjectRepository(ThreadRepository)
     private readonly threadRepository: ThreadRepository,
+    @InjectRepository(CityRepository)
+    private readonly cityRepository: CityRepository,
     private readonly filesService: FilesService,
     private readonly threadService: ThreadService
   ) {}
@@ -30,22 +30,37 @@ export class SubjectService {
       return await this.subjectRepository.find();
   }
 
-  async findOne(id: string, pageOptionsDTO: PageOptionsDTO): Promise<PageDTO<RecentThreadsDTO>> {
-    const queryBuilder = this.threadRepository.createQueryBuilder("thread");
+  async findOne(id: string, filters: ThreadFilterDTO): Promise<PageDTO<ThreadListDTO>> {
+    const queryBuilder = this.threadRepository.createQueryBuilder('thread');
     queryBuilder
       .leftJoinAndSelect('thread.user', 'user')
-      .where("thread.subject = :subject", { subject: id })
-      .orderBy("thread.createdAt", pageOptionsDTO.order)
-      .skip(pageOptionsDTO.skip)
-      .take(pageOptionsDTO.take);
+      .where('thread.subject = :subject', { subject: id })
+    if (filters.createdAfter) {
+      const date = new Date(filters.createdAfter).toISOString();
+      queryBuilder.andWhere('thread.createdAt >= :date', { date });
+    }
+    if (filters.city) {
+      const city = await this.cityRepository.findOne({
+        where: {
+          name: filters.city
+        }
+      });
+      queryBuilder.andWhere('user.city = :city', { city: city.id })
+    }
+    queryBuilder.orderBy('thread.createdAt', filters.order)
+    queryBuilder.skip(filters.skip).take(filters.take)
     const itemCount = await queryBuilder.getCount();
     let { entities } = await queryBuilder.getRawAndEntities();
     const threads = await Promise.all(entities.map(async (entity) => {
-      const response = RecentThreadsDTO.fromEntity(entity);
+      const response = ThreadListDTO.fromEntity(entity);
       response.commentCount = await this.threadService.getCommentCount(entity.id);
       return response;
     }));
-
+    const pageOptionsDTO = {
+      order: filters.order,
+      page: filters.page,
+      skip: filters.skip
+    };
     const pageMetaDto = new PageMetaDTO({ itemCount, pageOptionsDTO });
     return new PageDTO(threads, pageMetaDto);
   }
