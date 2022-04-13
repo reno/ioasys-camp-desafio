@@ -5,6 +5,7 @@ const { File } = require('./src/shared/entities/file/file.entity');
 const { Subject } = require('./src/shared/entities/subject/subject.entity');
 const { Thread } = require('./src/shared/entities/thread/thread.entity');
 const { Comment } = require('./src/shared/entities/comment/comment.entity');
+const { SavedThread } = require('./src/shared/entities/saved_threads/savedThread.entity');
 
 require('dotenv/config');
 
@@ -21,7 +22,8 @@ module.exports = [
       File,
       Subject,
       Thread,
-      Comment
+      Comment,
+      SavedThread,
     ],
     migrations: ['infra/typeorm/migrations/*.ts'],
     cli: {

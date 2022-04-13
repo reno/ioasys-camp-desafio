@@ -12,10 +12,12 @@ import {
   ManyToOne,
   JoinColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 import { City } from '@shared/entities/location/city.entity';
 import { State } from '@shared/entities/location/state.entity';
 import { File } from '@shared/entities/file/file.entity';
+import { SavedThread } from '@shared/entities/saved_threads/savedThread.entity';
 
 export enum UserRole {
   ADMIN = "admin",
@@ -83,6 +85,10 @@ export class User {
   @JoinColumn({ name: 'avatar_id' })
   @OneToOne(() => File, { eager: true, nullable: true })
   public avatar?: File;
+
+  @ApiProperty()
+  @OneToMany('SavedThread', 'user')
+  public savedThreads: SavedThread[];
 
   @ApiProperty()
   @ApiProperty()

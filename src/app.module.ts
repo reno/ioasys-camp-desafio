@@ -18,6 +18,8 @@ import { SubjectModule } from '@modules/subjects/subject.module';
 import { ThreadModule } from '@modules/threads/thread.module';
 import { CommentModule } from '@modules/comments/comment.module';
 import { SearchModule } from '@modules/search/search.module';
+import { SavedThread } from '@shared/entities/saved_threads/savedThread.entity';
+import { SavedThreadModule } from '@modules/saved_threads/savedThread.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -52,7 +54,8 @@ import { SearchModule } from '@modules/search/search.module';
         File, 
         Subject,
         Thread,
-        Comment
+        Comment,
+        SavedThread,
       ]
     }),
     AuthModule,
@@ -61,7 +64,8 @@ import { SearchModule } from '@modules/search/search.module';
     SubjectModule,
     ThreadModule,
     CommentModule,
-    SearchModule
+    SearchModule,
+    SavedThreadModule,
   ],
   controllers: [],
   providers: [],
