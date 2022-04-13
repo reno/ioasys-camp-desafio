@@ -20,7 +20,6 @@ import {
 import { instanceToInstance } from 'class-transformer';
 import { AuthGuard } from '@nestjs/passport';
 import { UserGuard } from '@shared/guards/user.guard';
-import { AdminGuard } from '@shared/guards/admin.guard';
 import { User } from '@shared/entities/user/user.entity';
 import { File } from '@shared/entities/file/file.entity';
 import { UserService } from './user.service';

@@ -31,26 +31,7 @@ export class SubjectService {
   }
 
   async findOne(id: string, filters: ThreadFilterDTO): Promise<PageDTO<ThreadListDTO>> {
-    const queryBuilder = this.threadRepository.createQueryBuilder('thread');
-    queryBuilder
-      .leftJoinAndSelect('thread.user', 'user')
-      .where('thread.subject = :subject', { subject: id })
-    if (filters.createdAfter) {
-      const date = new Date(filters.createdAfter).toISOString();
-      queryBuilder.andWhere('thread.createdAt >= :date', { date });
-    }
-    if (filters.city) {
-      const city = await this.cityRepository.findOne({
-        where: {
-          name: filters.city
-        }
-      });
-      queryBuilder.andWhere('user.city = :city', { city: city.id })
-    }
-    queryBuilder.orderBy('thread.createdAt', filters.order)
-    queryBuilder.skip(filters.skip).take(filters.take)
-    const itemCount = await queryBuilder.getCount();
-    let { entities } = await queryBuilder.getRawAndEntities();
+    const { entities, itemCount } = await this.threadRepository.findBySubjectWithFiltersAndCount(id, filters);
     const threads = await Promise.all(entities.map(async (entity) => {
       const response = ThreadListDTO.fromEntity(entity);
       response.commentCount = await this.threadService.getCommentCount(entity.id);

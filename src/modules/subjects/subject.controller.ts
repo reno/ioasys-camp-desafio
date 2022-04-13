@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -14,26 +13,21 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import {
-  ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { instanceToInstance } from 'class-transformer';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '@shared/guards/admin.guard';
-import { User } from '@shared/entities/user/user.entity';
 import { File } from '@shared/entities/file/file.entity';
 import { SubjectService } from '@modules/subjects/subject.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UserFromRequest } from '@shared/decorators/user.decorator';
 import { Subject } from '@shared/entities/subject/subject.entity';
 import { CreateSubjectDTO } from '@shared/dtos/subject/createSubject.dto';
 import { UpdateSubjectDTO } from '@shared/dtos/subject/updateSubject.dto';
-import { PageOptionsDTO } from '@shared/dtos/page/pageOptions.dto';
 import { PageDTO } from '@shared/dtos/page/page.dto';
 import { ThreadListDTO } from '@shared/dtos/thread/threadList.dto';
 import { SubjectListDTO } from '@shared/dtos/subject/subjectList.dto';
-import { Thread } from '@shared/entities/thread/thread.entity';
 import { ThreadFilterDTO } from '@shared/dtos/filter/threadFilter.dto';
 @ApiTags('Subjects')
 @Controller('subjects')

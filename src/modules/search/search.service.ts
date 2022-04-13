@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PageDTO } from '@shared/dtos/page/page.dto';
 import { PageOptionsDTO } from '@shared/dtos/page/pageOptions.dto';
 import { ThreadListDTO } from '@shared/dtos/thread/threadList.dto';
-import { Thread } from '@shared/entities/thread/thread.entity';
 import { ThreadService } from '@modules/threads/thread.service';
 import { PageMetaDTO } from '@shared/dtos/page/meta.dto';
 

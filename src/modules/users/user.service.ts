@@ -115,7 +115,7 @@ export class UserService {
     }
   }
 
-  private async _checkUnique(createUserDTO: CreateUserDTO): Promise<Boolean> {
+  private async _checkUnique(createUserDTO: CreateUserDTO): Promise<boolean> {
     const { email } = createUserDTO;
     const emailExists = await this.userRepository.findByEmail(email);
     if (emailExists) {
