@@ -17,7 +17,8 @@ import {
 import { City } from '@shared/entities/location/city.entity';
 import { State } from '@shared/entities/location/state.entity';
 import { File } from '@shared/entities/file/file.entity';
-import { SavedThread } from '@shared/entities/saved_threads/savedThread.entity';
+import { SavedThread } from '@shared/entities/saved_thread/savedThread.entity';
+import { BusinessType } from '@shared/entities/business_type/businessType.entity';
 
 export enum UserRole {
   ADMIN = "admin",
@@ -70,6 +71,12 @@ export class User {
   @JoinColumn({ name: 'state_id' })
   @Transform(({ value }) => value.name)
   state: State;
+
+  @ApiProperty()
+  @ManyToOne(() => BusinessType)
+  @JoinColumn({ name: 'business_type_id' })
+  @Transform(({ value }) => value.name)
+  businessType: BusinessType;
 
   @ApiProperty()
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
