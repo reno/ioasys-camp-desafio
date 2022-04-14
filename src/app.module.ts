@@ -21,6 +21,7 @@ import { SearchModule } from '@modules/search/search.module';
 import { SavedThread } from '@shared/entities/saved_thread/savedThread.entity';
 import { SavedThreadModule } from '@modules/saved_threads/savedThread.module';
 import { BusinessType } from '@shared/entities/business_type/businessType.entity';
+import { BusinessTypeModule } from '@modules/business_types/businessType.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -68,6 +69,7 @@ import { BusinessType } from '@shared/entities/business_type/businessType.entity
     CommentModule,
     SearchModule,
     SavedThreadModule,
+    BusinessTypeModule,
   ],
   controllers: [],
   providers: [],

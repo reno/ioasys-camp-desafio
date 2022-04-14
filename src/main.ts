@@ -11,7 +11,7 @@ async function bootstrap() {
   const logger = new Logger('NestApplication');
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('ioasys camp - Desafio final')
+    .setTitle('ioasys camp - Tamojunto')
     .setVersion('1')
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);

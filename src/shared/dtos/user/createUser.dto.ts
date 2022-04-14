@@ -51,6 +51,11 @@ export class CreateUserDTO {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
+  public businessTypeId: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   public cityId: string;
 
   @ApiProperty()
