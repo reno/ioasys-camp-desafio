@@ -5,6 +5,8 @@ const { File } = require('./src/shared/entities/file/file.entity');
 const { Subject } = require('./src/shared/entities/subject/subject.entity');
 const { Thread } = require('./src/shared/entities/thread/thread.entity');
 const { Comment } = require('./src/shared/entities/comment/comment.entity');
+const { SavedThread } = require('./src/shared/entities/saved_thread/savedThread.entity');
+const { BusinessType } = require('./src/shared/entities/business_type/businessType.entity');
 
 require('dotenv/config');
 
@@ -21,7 +23,9 @@ module.exports = [
       File,
       Subject,
       Thread,
-      Comment
+      Comment,
+      SavedThread,
+      BusinessType,
     ],
     migrations: ['infra/typeorm/migrations/*.ts'],
     cli: {
@@ -43,7 +47,13 @@ module.exports = [
     entities: [ //'dist/shared/entities/**/*.entity.js'
       User,
       City,
-      State
+      State,
+      File,
+      Subject,
+      Thread,
+      Comment,
+      SavedThread,
+      BusinessType,
     ],
     migrations: ['infra/typeorm/seeds/*.ts'],
     cli: {

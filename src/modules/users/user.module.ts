@@ -10,6 +10,7 @@ import { CityRepository } from '@modules/location/repository/city.repository';
 import { StateRepository } from '@modules/location/repository/state.repository';
 import { FilesService } from '@modules/files/files.service';
 import { FileRepository } from '@modules/files/repository/file.repository';
+import { BusinessTypeRepository } from '@modules/business_types/repository/businessType.repository';
 
 @Module({
   imports: [
@@ -18,15 +19,16 @@ import { FileRepository } from '@modules/files/repository/file.repository';
         UserRepository,
         CityRepository,
         StateRepository,
-        FileRepository
-      ]
+        FileRepository,
+        BusinessTypeRepository
+      ],  
     ),
     BcryptProvider,
   ],
   providers: [
     BcryptProvider,
     UserService,
-    FilesService
+    FilesService,
   ],
   controllers: [UserController],
   exports: [UserService]

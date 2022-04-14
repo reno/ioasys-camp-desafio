@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { LocationService } from '@modules/location/location.service';
 import { ApiTags } from '@nestjs/swagger';
 import { instanceToInstance } from 'class-transformer';

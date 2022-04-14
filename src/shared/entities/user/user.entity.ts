@@ -4,21 +4,21 @@ import { Exclude, Transform } from 'class-transformer';
 import {
   Entity,
   Column,
-  Unique,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  ManyToMany,
-  JoinTable,
   BeforeInsert,
   ManyToOne,
   JoinColumn,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 import { City } from '@shared/entities/location/city.entity';
 import { State } from '@shared/entities/location/state.entity';
 import { File } from '@shared/entities/file/file.entity';
+import { SavedThread } from '@shared/entities/saved_thread/savedThread.entity';
+import { BusinessType } from '@shared/entities/business_type/businessType.entity';
 
 export enum UserRole {
   ADMIN = "admin",
@@ -73,6 +73,12 @@ export class User {
   state: State;
 
   @ApiProperty()
+  @ManyToOne(() => BusinessType)
+  @JoinColumn({ name: 'business_type_id' })
+  @Transform(({ value }) => value.name)
+  businessType: BusinessType;
+
+  @ApiProperty()
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
   @Exclude()
   public role: UserRole;
@@ -86,6 +92,10 @@ export class User {
   @JoinColumn({ name: 'avatar_id' })
   @OneToOne(() => File, { eager: true, nullable: true })
   public avatar?: File;
+
+  @ApiProperty()
+  @OneToMany('SavedThread', 'user')
+  public savedThreads: SavedThread[];
 
   @ApiProperty()
   @ApiProperty()

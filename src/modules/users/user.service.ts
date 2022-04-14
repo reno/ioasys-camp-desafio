@@ -15,6 +15,8 @@ import { BcryptProvider } from '@shared/providers/EncryptProvider/bcrypt.provide
 import { CityRepository } from '@modules/location/repository/city.repository';
 import { StateRepository } from '@modules/location/repository/state.repository';
 import { FilesService } from '@modules/files/files.service';
+import { BusinessType } from '@shared/entities/business_type/businessType.entity';
+import { BusinessTypeRepository } from '@modules/business_types/repository/businessType.repository';
 
 @Injectable()
 export class UserService {
@@ -25,6 +27,8 @@ export class UserService {
     private readonly cityRepository: CityRepository,
     @InjectRepository(StateRepository)
     private readonly stateRepository: StateRepository,
+    @InjectRepository(BusinessTypeRepository)
+    private readonly businessTypeRepository: BusinessTypeRepository,
     private readonly encryptProvider: BcryptProvider,
     private readonly filesService: FilesService
   ) {}
@@ -56,10 +60,11 @@ export class UserService {
 
   async create(createUserDTO: CreateUserDTO): Promise<User> {
     if (await this._checkUnique(createUserDTO)) {
-      const { cityId, stateId } = createUserDTO;
+      const { cityId, stateId, businessTypeId } = createUserDTO;
       const state = await this.stateRepository.findOne(stateId);
       const city = await this.cityRepository.findOne(cityId);
-      return this.userRepository.createUser(createUserDTO, city, state);
+      const businessType = await this.businessTypeRepository.findOne(businessTypeId);
+      return this.userRepository.createUser(createUserDTO, city, state, businessType);
     }
   }
 
@@ -115,7 +120,7 @@ export class UserService {
     }
   }
 
-  private async _checkUnique(createUserDTO: CreateUserDTO): Promise<Boolean> {
+  private async _checkUnique(createUserDTO: CreateUserDTO): Promise<boolean> {
     const { email } = createUserDTO;
     const emailExists = await this.userRepository.findByEmail(email);
     if (emailExists) {

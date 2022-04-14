@@ -11,7 +11,6 @@ export class AddLocations1648747686564 implements MigrationInterface {
       const state = await queryRunner.manager.save(
         queryRunner.manager.create<State>(State, { name: stateData.name })
       );
-      console.log(state);
       for (let cityName of stateData.cities) {
         const city = await queryRunner.manager.save(
           queryRunner.manager.create<City>(City, {

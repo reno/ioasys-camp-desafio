@@ -40,15 +40,7 @@ export class ThreadService {
   }
 
   async findAll(pageOptionsDTO: PageOptionsDTO): Promise<PageDTO<RecentThreadsDTO>> {
-    const queryBuilder = this.threadRepository.createQueryBuilder("thread");
-    queryBuilder
-      .leftJoinAndSelect('thread.user', 'user')
-      .leftJoinAndSelect('thread.subject', 'subject')
-      .orderBy("thread.createdAt", "DESC")
-      .skip(pageOptionsDTO.skip)
-      .take(pageOptionsDTO.take);
-    const itemCount = await queryBuilder.getCount();
-    let { entities } = await queryBuilder.getRawAndEntities();
+    const { entities, itemCount } = await this.threadRepository.findAllAndCount(pageOptionsDTO);
     const threads = await Promise.all(entities.map(async (entity) => {
       const response = RecentThreadsDTO.fromEntity(entity);
       response.commentCount = await this.getCommentCount(entity.id);

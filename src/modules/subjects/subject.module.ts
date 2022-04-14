@@ -7,11 +7,9 @@ import { FileRepository } from '@modules/files/repository/file.repository';
 import { FilesService } from '@modules/files/files.service';
 import { ThreadRepository } from '@modules/threads/repository/thread.repository';
 import { ThreadService } from '@modules/threads/thread.service';
-import { UserModule } from '@modules/users/user.module';
-import { CommentModule } from '@modules/comments/comment.module';
-import { ThreadModule } from '@modules/threads/thread.module';
 import { CommentRepository } from '@modules/comments/repository/comment.repository';
 import { UserRepository } from '@modules/users/repository/user.repository';
+import { CityRepository } from '@modules/location/repository/city.repository';
 
 @Module({
   imports: [
@@ -20,7 +18,8 @@ import { UserRepository } from '@modules/users/repository/user.repository';
       FileRepository,
       ThreadRepository,
       CommentRepository,
-      UserRepository
+      UserRepository,
+      CityRepository,
     ]),
   ],
   controllers: [SubjectController],

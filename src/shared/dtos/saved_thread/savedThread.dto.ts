@@ -4,10 +4,10 @@ import {
   IsString,
 } from 'class-validator';
 
-export class CreateSubjectDTO {
+export class SavedThreadDTO {
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  public name: string;
+  public threadId: string;
 }

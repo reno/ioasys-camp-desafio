@@ -3,7 +3,6 @@ import envConfig from '@config/env';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WinstonModule, utilities as nestWinstonModuleUtilities } from 'nest-winston';
-import * as path from 'path';
 import * as winston from 'winston';
 import { UserModule } from '@modules/users/user.module';
 import { AuthModule } from '@modules/auth/auth.module';
@@ -19,6 +18,10 @@ import { SubjectModule } from '@modules/subjects/subject.module';
 import { ThreadModule } from '@modules/threads/thread.module';
 import { CommentModule } from '@modules/comments/comment.module';
 import { SearchModule } from '@modules/search/search.module';
+import { SavedThread } from '@shared/entities/saved_thread/savedThread.entity';
+import { SavedThreadModule } from '@modules/saved_threads/savedThread.module';
+import { BusinessType } from '@shared/entities/business_type/businessType.entity';
+import { BusinessTypeModule } from '@modules/business_types/businessType.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -53,7 +56,9 @@ import { SearchModule } from '@modules/search/search.module';
         File, 
         Subject,
         Thread,
-        Comment
+        Comment,
+        SavedThread,
+        BusinessType,
       ]
     }),
     AuthModule,
@@ -62,7 +67,9 @@ import { SearchModule } from '@modules/search/search.module';
     SubjectModule,
     ThreadModule,
     CommentModule,
-    SearchModule
+    SearchModule,
+    SavedThreadModule,
+    BusinessTypeModule,
   ],
   controllers: [],
   providers: [],

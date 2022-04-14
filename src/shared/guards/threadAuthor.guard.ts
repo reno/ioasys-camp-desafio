@@ -12,7 +12,6 @@ export class ThreadAuthorGuard implements CanActivate {
       return false;
     }
     const user: User = request.user;
-    const object_id = request.params.id;
     const thread = await this.threadService.findById(request.params.id);
     return thread.user.id === user.id;
   }

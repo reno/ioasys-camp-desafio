@@ -15,7 +15,6 @@ import {
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PageDTO } from '@shared/dtos/page/page.dto';
-import { PageMetaDTO } from '@shared/dtos/page/meta.dto';
 import { PageOptionsDTO } from '@shared/dtos/page/pageOptions.dto';
 import { ThreadService } from '@modules/threads/thread.service';
 import { ThreadListDTO } from '@shared/dtos/thread/threadList.dto';

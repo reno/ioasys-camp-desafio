@@ -12,7 +12,6 @@ export class CommentAuthorGuard implements CanActivate {
       return false;
     }
     const user: User = request.user;
-    const object_id = request.params.id;
     const comment = await this.commentService.findById(request.params.id);
     return comment.user.id === user.id;
   }
