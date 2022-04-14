@@ -26,7 +26,7 @@ import { UserFromRequest } from '@shared/decorators/user.decorator';
 import { User } from '@shared/entities/user/user.entity';
 import { SavedThreadService } from '@modules/saved_threads/savedThread.service';
 import { SavedThreadDTO } from '@shared/dtos/saved_thread/savedThread.dto';
-import { SavedThread } from '@shared/entities/saved_threads/savedThread.entity';
+import { SavedThread } from '@shared/entities/saved_thread/savedThread.entity';
 
 
 @ApiTags('SavedThreads')

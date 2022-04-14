@@ -6,7 +6,7 @@ import { PageDTO } from '@shared/dtos/page/page.dto';
 import { ThreadListDTO } from '@shared/dtos/thread/threadList.dto';
 import { ThreadService } from '@modules/threads/thread.service';
 import { SavedThreadRepository } from './repository/savedThread.repository';
-import { SavedThread } from '@shared/entities/saved_threads/savedThread.entity';
+import { SavedThread } from '@shared/entities/saved_thread/savedThread.entity';
 import { SavedThreadDTO } from '@shared/dtos/saved_thread/savedThread.dto';
 import { UserRepository } from '@modules/users/repository/user.repository';
 import { PageOptionsDTO } from '@shared/dtos/page/pageOptions.dto';

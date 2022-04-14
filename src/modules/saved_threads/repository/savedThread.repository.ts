@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from "typeorm";
-import { SavedThread } from '@shared/entities/saved_threads/savedThread.entity'
+import { SavedThread } from '@shared/entities/saved_thread/savedThread.entity'
 import { PageOptionsDTO } from "@shared/dtos/page/pageOptions.dto";
 
 @EntityRepository(SavedThread)

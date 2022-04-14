@@ -49,4 +49,17 @@ export class ThreadRepository extends Repository<Thread> {
     let { entities } = await queryBuilder.getRawAndEntities();
     return { entities, itemCount };
   }
+
+  async findByQueryAndCount(query: string, pageOptionsDTO: PageOptionsDTO) {
+    let queryBuilder = await this.createQueryBuilder('thread')
+      .leftJoinAndSelect('thread.subject', 'subject')
+      .leftJoin('thread.comments', 'comments')
+      .where(`to_tsvector(thread.title) @@ to_tsquery(:query)`, { query })
+      .orWhere(`to_tsvector(thread.content) @@ to_tsquery(:query)`, { query })
+      .orWhere(`to_tsvector(comments.content) @@ to_tsquery(:query)`, { query })
+      .orderBy('thread.createdAt', pageOptionsDTO.order)
+    const itemCount = await queryBuilder.getCount();
+    let { entities } = await queryBuilder.getRawAndEntities();
+    return { entities, itemCount };
+  }
 }
