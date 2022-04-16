@@ -1,5 +1,6 @@
+import { User } from '@shared/entities/user/user.entity';
 export interface LoginStatus {
-    email: string;
+    user: User;
     accessToken: any;
     expiresIn: any;
 }

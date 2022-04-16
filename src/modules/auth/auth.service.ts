@@ -5,6 +5,7 @@ import { UserService } from '@modules/users/user.service';
 import { LoginStatus } from './interfaces/login-status.interface';
 import { JwtPayload } from './interfaces/payload.interface';
 import { User } from '@shared/entities/user/user.entity';
+import { instanceToInstance } from 'class-transformer';
 
 
 @Injectable()
@@ -18,7 +19,7 @@ export class AuthService {
     const user = await this.userService.findByLogin(loginDTO);  
     const token = this._createToken(user);
     return {
-      email: user.email,
+      user: instanceToInstance(user),
       ...token,
     };
   }
