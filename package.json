@@ -1,5 +1,5 @@
 {
-  "name": "nest-camp-api",
+  "name": "camp-tamojunto",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -29,6 +29,7 @@
     "db:seed:revert": "yarn typeorm:cli migration:revert -c seed"
   },
   "dependencies": {
+    "@nestjs/cli": "^8.0.0",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.1.6",
     "@nestjs/core": "^8.0.0",
@@ -38,8 +39,6 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.2.0",
     "@nestjs/typeorm": "^8.0.3",
-    "@types/aws-sdk": "^2.7.0",
-    "@types/uuid": "^8.3.4",
     "aws-sdk": "^2.1105.0",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
@@ -57,7 +56,6 @@
     "winston": "^3.5.1"
   },
   "devDependencies": {
-    "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
     "@types/express": "^4.17.13",
@@ -65,6 +63,8 @@
     "@types/multer": "^1.4.7",
     "@types/node": "^16.0.0",
     "@types/supertest": "^2.0.11",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
     "eslint": "^7.30.0",
@@ -95,5 +95,9 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "engines": {
+    "node": "16.13.x",
+    "npm": "8.1.0"
   }
 }
