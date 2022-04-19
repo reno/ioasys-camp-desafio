@@ -31,5 +31,6 @@ export class EmailController {
   @UseGuards(AuthGuard('jwt'))
   async resendConfirmationLink(@UserFromRequest() user: User) {
     await this.emailService.resendConfirmationLink(user.id);
+    return { message: 'Confirmation link sent' };
   }
 }

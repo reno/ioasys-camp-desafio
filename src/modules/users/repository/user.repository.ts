@@ -13,7 +13,7 @@ export class UserRepository extends Repository<User> {
   }
 
   async findById(id: string): Promise<User | undefined> {
-    return this.findOne(id, { relations: ['city', 'state', 'business_type'] });
+    return this.findOne(id, { relations: ['city', 'state', 'businessType'] });
   }
 
   async createUser(createUserDTO: CreateUserDTO, city: City, state: State, businessType: BusinessType): Promise<User> {

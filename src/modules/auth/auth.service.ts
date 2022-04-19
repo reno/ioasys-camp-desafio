@@ -6,7 +6,7 @@ import { LoginStatus } from './interfaces/login-status.interface';
 import { JwtPayload } from './interfaces/payload.interface';
 import { User } from '@shared/entities/user/user.entity';
 import { instanceToInstance } from 'class-transformer';
-
+import envConfig from '@config/env';
 
 @Injectable()
 export class AuthService {
@@ -33,7 +33,7 @@ export class AuthService {
   }
 
   private _createToken({ id }: User): any {
-    const expiresIn = process.env.EXPIRES_IN || '1d';
+    const expiresIn = envConfig().expiresIn || '1d';
     const payload: JwtPayload = { userId: id };
     const accessToken = this.jwtService.sign(payload);
     return { expiresIn, accessToken };
