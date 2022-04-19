@@ -27,11 +27,15 @@ import { CreateUserDTO } from '@shared/dtos/user/createUser.dto';
 import { UpdateUserDTO } from '@shared/dtos/user/updateUser.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserFromRequest } from '@shared/decorators/user.decorator';
+import { EmailService } from '@modules/email/email.service';
 
 @ApiTags('Users')
 @Controller('users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private emailService: EmailService,
+    ) {}
 
   @Get()
   async findAll() {
@@ -49,11 +53,9 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ type: User })
-  @ApiBadRequestResponse({
-    description: 'This will be returned when has validation error',
-  })
   public async create(@Body() createUserDTO: CreateUserDTO) {
     const user = await this.userService.create(createUserDTO);
+    await this.emailService.sendConfirmationLink(user.email);
     return instanceToInstance(user);
   }
 

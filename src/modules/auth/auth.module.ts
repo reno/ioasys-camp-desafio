@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import envConfig from '@config/env';
 import { UserModule } from '@modules/users/user.module';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
+import { AuthController } from '@modules/auth/auth.controller';
+import { AuthService } from '@modules/auth/auth.service';
+import { JwtStrategy } from '@modules/auth/jwt.strategy';
 
 @Module({
     imports: [
@@ -17,9 +18,9 @@ import { JwtStrategy } from './jwt.strategy';
             session: false,
         }),
         JwtModule.register({
-            secret: process.env.JWT_SECRET,
+            secret: envConfig().jwtSecret,
             signOptions: {
-                expiresIn: process.env.EXPIRES_IN,
+                expiresIn: envConfig().expiresIn,
             },
         }),
     ],

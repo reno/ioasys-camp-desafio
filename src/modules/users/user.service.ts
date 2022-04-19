@@ -120,6 +120,12 @@ export class UserService {
     }
   }
 
+  async confirmEmail(email: string) {
+    return this.userRepository.update({ email }, {
+      isActive: true
+    });
+  }
+
   private async _checkUnique(createUserDTO: CreateUserDTO): Promise<boolean> {
     const { email } = createUserDTO;
     const emailExists = await this.userRepository.findByEmail(email);
