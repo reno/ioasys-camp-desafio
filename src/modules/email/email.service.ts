@@ -27,7 +27,7 @@ export class EmailService {
 
   public sendConfirmationLink(email: string) {
     const payload: EmailConfirmationPayload = { email };
-    const token = this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload, { secret: process.env.JWT_SECRET, expiresIn: '1d' });
     const url = `http://localhost:8000/email-confirmation/?token=${token}`;
     const html = `<p>Olá,<br>
     <br>
@@ -56,7 +56,7 @@ export class EmailService {
  
   public async decodeToken(token: string) {
     try {
-      const payload = await this.jwtService.verify(token, { secret: process.env.JWT_SECRET });
+      const payload = await this.jwtService.verify(token, { secret: process.env.JWT_SECRET});
       if (typeof payload === 'object' && 'email' in payload) {
         console.log(payload);
         return payload.email;
