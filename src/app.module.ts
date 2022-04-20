@@ -4,6 +4,9 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WinstonModule, utilities as nestWinstonModuleUtilities } from 'nest-winston';
 import * as winston from 'winston';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import * as path from 'path'; 
 import { UserModule } from '@modules/users/user.module';
 import { AuthModule } from '@modules/auth/auth.module';
 import { LocationModule } from '@modules/location/location.module';
@@ -22,6 +25,8 @@ import { SavedThread } from '@shared/entities/saved_thread/savedThread.entity';
 import { SavedThreadModule } from '@modules/saved_threads/savedThread.module';
 import { BusinessType } from '@shared/entities/business_type/businessType.entity';
 import { BusinessTypeModule } from '@modules/business_types/businessType.module';
+import { EmailModule } from '@modules/email/email.module';
+import { dirname, join } from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -38,9 +43,23 @@ import { BusinessTypeModule } from '@modules/business_types/businessType.module'
         }),
       ],
     }),
+    MailerModule.forRoot({
+      
+      template: {
+        dir: join(__dirname, 'templates'),
+        adapter: new HandlebarsAdapter(),
+        options: {
+          strict: true,
+          extName: '.hbs',
+          layoutsDir: 'src/templates/',
+        },
+      },
+      
+      transport: envConfig().emailConnectionString,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.DATABASE_URL,       
+      url: envConfig().dbConnectionString,       
       synchronize: false,
       logging: true,
       ssl: true,
@@ -70,6 +89,7 @@ import { BusinessTypeModule } from '@modules/business_types/businessType.module'
     SearchModule,
     SavedThreadModule,
     BusinessTypeModule,
+    EmailModule,
   ],
   controllers: [],
   providers: [],

@@ -11,6 +11,7 @@ import { StateRepository } from '@modules/location/repository/state.repository';
 import { FilesService } from '@modules/files/files.service';
 import { FileRepository } from '@modules/files/repository/file.repository';
 import { BusinessTypeRepository } from '@modules/business_types/repository/businessType.repository';
+import { EmailModule } from '@modules/email/email.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { BusinessTypeRepository } from '@modules/business_types/repository/busin
       ],  
     ),
     BcryptProvider,
+    EmailModule
   ],
   providers: [
     BcryptProvider,

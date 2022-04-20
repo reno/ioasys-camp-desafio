@@ -6,7 +6,7 @@ import { LoginStatus } from './interfaces/login-status.interface';
 import { JwtPayload } from './interfaces/payload.interface';
 import { User } from '@shared/entities/user/user.entity';
 import { instanceToInstance } from 'class-transformer';
-
+import envConfig from '@config/env';
 
 @Injectable()
 export class AuthService {

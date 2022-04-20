@@ -27,6 +27,7 @@ import { User } from '@shared/entities/user/user.entity';
 import { SavedThreadService } from '@modules/saved_threads/savedThread.service';
 import { SavedThreadDTO } from '@shared/dtos/saved_thread/savedThread.dto';
 import { SavedThread } from '@shared/entities/saved_thread/savedThread.entity';
+import { EmailConfirmationGuard } from '@shared/guards/emailConfirmation.guard';
 
 
 @ApiTags('SavedThreads')
@@ -36,7 +37,7 @@ export class SavedThreadController {
   constructor(private readonly savedThreadService: SavedThreadService) {}
 
   @Get()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard)
   public async findByUser(
     @UserFromRequest() user: User,
     @Query() pageOptionsDTO: PageOptionsDTO
@@ -45,7 +46,7 @@ export class SavedThreadController {
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard)
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ type: SavedThread })
   public async create(@UserFromRequest() user: User, @Body() savedThreadDTO: SavedThreadDTO) {
@@ -54,7 +55,7 @@ export class SavedThreadController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard)
   async delete(@Param('id') id: string) {
     const savedThread = await this.savedThreadService.remove(id);
     return instanceToInstance(savedThread);

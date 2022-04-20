@@ -27,11 +27,16 @@ import { CreateUserDTO } from '@shared/dtos/user/createUser.dto';
 import { UpdateUserDTO } from '@shared/dtos/user/updateUser.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserFromRequest } from '@shared/decorators/user.decorator';
+import { EmailService } from '@modules/email/email.service';
+import { EmailConfirmationGuard } from '@shared/guards/emailConfirmation.guard';
 
 @ApiTags('Users')
 @Controller('users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private emailService: EmailService,
+    ) {}
 
   @Get()
   async findAll() {
@@ -40,7 +45,7 @@ export class UserController {
   }
 
   @Get(':id')
-  @UseGuards(AuthGuard('jwt'), UserGuard)  
+  @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard, UserGuard)  
   async findOne(@Param('id') id: string) {
     const user = await this.userService.findById(id);
     return instanceToInstance(user);
@@ -49,23 +54,21 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ type: User })
-  @ApiBadRequestResponse({
-    description: 'This will be returned when has validation error',
-  })
   public async create(@Body() createUserDTO: CreateUserDTO) {
     const user = await this.userService.create(createUserDTO);
+    await this.emailService.sendConfirmationLink(user.email);
     return instanceToInstance(user);
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard('jwt'), UserGuard)
+  @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard, UserGuard)
   async update(@Param('id') id: string, @Body() updateUserDTO: UpdateUserDTO,){
     const user = await this.userService.update(id, updateUserDTO);
     return instanceToInstance(user);
   }
   
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'), UserGuard)
+  @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard, UserGuard)
   async delete(@Param('id') id: string) {
     const user = await this.userService.remove(id);
     return instanceToInstance(user);
@@ -73,7 +76,7 @@ export class UserController {
 
   @Post('avatar')
   @ApiCreatedResponse({ type: File })
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard)
   @UseInterceptors(FileInterceptor('file'))
   async addAvatar(@UserFromRequest() user: User, @UploadedFile() file: Express.Multer.File) {
     return this.userService.addAvatar(user.id, file.buffer, file.originalname);
