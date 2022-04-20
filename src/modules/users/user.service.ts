@@ -37,7 +37,7 @@ export class UserService {
     return await this.userRepository.findById(id);
   }
 
-  async findByEmail({ email }: any): Promise<User> {
+  async findByEmail(email: string): Promise<User> {
     return await this.userRepository.findByEmail(email);
   }
   
@@ -123,6 +123,12 @@ export class UserService {
   async confirmEmail(email: string) {
     return this.userRepository.update({ email }, {
       isActive: true
+    });
+  }
+
+  async updatePassword(id: string, password: string) {
+    return this.userRepository.update({ id }, {
+      password: await this.encryptProvider.createHash(password)
     });
   }
 

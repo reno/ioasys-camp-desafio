@@ -17,6 +17,7 @@ export class EmailService {
     this.nodemailerService = createTransport({
       url: envConfig().emailConnectionString, 
       service: envConfig().emailService,
+      secure: false,
       auth: {
         user: envConfig().emailUser,
         pass: envConfig().emailPassword,
@@ -26,16 +27,22 @@ export class EmailService {
 
   public sendConfirmationLink(email: string) {
     const payload: EmailConfirmationPayload = { email };
-    const token = this.jwtService.sign(payload, {
-      secret: envConfig().jwtSecret, 
-      expiresIn: envConfig().expiresIn,
-    });
+    const token = this.jwtService.sign(payload);
+    const url = `http://localhost:8000/email-confirmation/?token=${token}`;
+    const html = `<p>Olá,<br>
+    <br>
+    Estamos felizes por ter você na tamojunto, a sua comunidade empreendedora 😉<br>
+    Para confirmar seu cadastro e acessar a plataforma, por favor acesse o link abaixo:<br>
+    <br>
+    ${url}<br>
+    <br>
+    Nos vemos do outro lado,<br>
+    Equipe tamojunto.</p>`;
     return this.nodemailerService.sendMail({
       to: email,
       from: 'tamojunto.work@gmail.com',
-      subject: 'Email de confirmação',
-      template: 'emailConfirmation',
-      context: { token }
+      subject: 'Confirme seu cadastro na tamojunto',
+      html,
     })
   }
 
@@ -47,12 +54,11 @@ export class EmailService {
     await this.sendConfirmationLink(user.email);
   }
  
-  public async decodeConfirmationToken(token: string) {
+  public async decodeToken(token: string) {
     try {
-      const payload = await this.jwtService.verify(token, {
-        secret: envConfig().jwtSecret,
-      });
+      const payload = await this.jwtService.verify(token, { secret: process.env.JWT_SECRET });
       if (typeof payload === 'object' && 'email' in payload) {
+        console.log(payload);
         return payload.email;
       }
       throw new BadRequestException();
@@ -70,5 +76,39 @@ export class EmailService {
       throw new BadRequestException('Email already confirmed');
     }
     await this.userService.confirmEmail(email);
+  }
+
+  public async sendPasswordRecoverLink(email: string) {
+    const payload: EmailConfirmationPayload = { email };
+    const token = this.jwtService.sign(payload, { secret: process.env.JWT_SECRET, expiresIn: '1d' });
+    const url = `http://localhost:8000/password-reset/?token=${token}`;
+    const html = `<p>Olá,<br>
+    <br>
+    Recebemos seu pedido para redefinir a senha da sua conta na tamojunto.<br>
+    <br>
+    Para escolher uma nova senha de acesso, por favor acesse o link abaixo:<br>
+    <br>
+    ${url}<br>
+    <br>
+    Caso não tenha sido você, ignore o link e não vai acontecer nada. Sua conta está segura, mas atenção! Alguém pode estar tentando se passar por você.<br>
+    <br>
+    Talvez seja uma boa ideia trocar a senha só por precaução 😉<br>
+    <br>
+    Equipe tamojunto.</p>`;
+    return this.nodemailerService.sendMail({
+      to: email,
+      from: 'tamojunto.work@gmail.com',
+      subject: 'Redefinição de senha na tamojunto',
+      html,
+    })
+  }
+
+  public async passwordRecover(email: string, password: string) {
+    const user = await this.userService.findByEmail(email);
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    await this.userService.updatePassword(user.id, password);
+  
   }
 }

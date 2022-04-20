@@ -9,9 +9,9 @@ import { UserModule } from '@modules/users/user.module';
 @Module({
   imports: [
     JwtModule.register({
-      secret: envConfig().jwtSecret,
+      secret: process.env.JWT_SECRET,
       signOptions: {
-        expiresIn: envConfig().expiresIn,
+        expiresIn: process.env.EXPIRE_IN,
       },
     }),
     forwardRef(() => UserModule)

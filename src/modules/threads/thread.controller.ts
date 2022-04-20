@@ -27,6 +27,7 @@ import { User } from '@shared/entities/user/user.entity';
 import { UpdateThreadDTO } from '@shared/dtos/thread/updateThread.dto';
 import { ThreadAuthorGuard } from '@shared/guards/threadAuthor.guard';
 import { RecentThreadsDTO } from '@shared/dtos/thread/recentThreads.dto';
+import { EmailConfirmationGuard } from '@shared/guards/emailConfirmation.guard';
 
 @ApiTags('Threads')
 @Controller('threads')
@@ -48,21 +49,21 @@ export class ThreadController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ type: Thread })
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard)
   public async create(@UserFromRequest() user: User, @Body() createThreadDTO: CreateThreadDTO) {
     const thread = await this.threadService.create(user.id, createThreadDTO);
     return instanceToInstance(thread);
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard('jwt'), ThreadAuthorGuard)
+  @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard, ThreadAuthorGuard)
   async update(@Param('id') id: string, @Body() updateThreadDTO: UpdateThreadDTO,){
     const thread = await this.threadService.update(id, updateThreadDTO);
     return instanceToInstance(thread);
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'), ThreadAuthorGuard)
+  @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard, ThreadAuthorGuard)
   async delete(@Param('id') id: string) {
     const thread = await this.threadService.remove(id);
     return instanceToInstance(thread);

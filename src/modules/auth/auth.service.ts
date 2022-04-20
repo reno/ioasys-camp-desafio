@@ -33,7 +33,7 @@ export class AuthService {
   }
 
   private _createToken({ id }: User): any {
-    const expiresIn = envConfig().expiresIn || '1d';
+    const expiresIn = process.env.EXPIRES_IN || '1d';
     const payload: JwtPayload = { userId: id };
     const accessToken = this.jwtService.sign(payload);
     return { expiresIn, accessToken };

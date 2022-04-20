@@ -26,6 +26,7 @@ import { SavedThreadModule } from '@modules/saved_threads/savedThread.module';
 import { BusinessType } from '@shared/entities/business_type/businessType.entity';
 import { BusinessTypeModule } from '@modules/business_types/businessType.module';
 import { EmailModule } from '@modules/email/email.module';
+import { dirname, join } from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -43,14 +44,17 @@ import { EmailModule } from '@modules/email/email.module';
       ],
     }),
     MailerModule.forRoot({
+      
       template: {
-        dir: path.resolve(__dirname, 'templates'),
+        dir: join(__dirname, 'templates'),
         adapter: new HandlebarsAdapter(),
         options: {
+          strict: true,
           extName: '.hbs',
-          layoutsDir: path.resolve(__dirname, 'templates'),
+          layoutsDir: 'src/templates/',
         },
       },
+      
       transport: envConfig().emailConnectionString,
     }),
     TypeOrmModule.forRoot({
