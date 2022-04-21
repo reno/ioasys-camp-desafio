@@ -34,7 +34,9 @@ export class EmailService {
     Estamos felizes por ter você na tamojunto, a sua comunidade empreendedora 😉<br>
     Para confirmar seu cadastro e acessar a plataforma, por favor acesse o link abaixo:<br>
     <br>
-    ${url}<br>
+    <div style="margin: 20px 20px; width: 180px; padding: 10px 20px; background-color: #0D4A4E; border-radius: 5px; text-align: center;">
+    <a href="${url}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #ffffff; font-size: 14px; margin: 0 auto;">Confirmar email</a>
+    </div>
     <br>
     Nos vemos do outro lado,<br>
     Equipe tamojunto.</p>`;
@@ -88,7 +90,9 @@ export class EmailService {
     <br>
     Para escolher uma nova senha de acesso, por favor acesse o link abaixo:<br>
     <br>
-    ${url}<br>
+    <div style="margin: 20px 20px; width: 180px; padding: 10px 20px; background-color: #0D4A4E; border-radius: 5px; text-align: center;">
+    <a href="${url}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #ffffff; font-size: 14px; margin: 0 auto;">Redefinir senha</a>
+    </div>
     <br>
     Caso não tenha sido você, ignore o link e não vai acontecer nada. Sua conta está segura, mas atenção! Alguém pode estar tentando se passar por você.<br>
     <br>

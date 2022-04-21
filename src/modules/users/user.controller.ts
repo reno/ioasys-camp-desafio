@@ -14,7 +14,9 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
+  ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { instanceToInstance } from 'class-transformer';
@@ -39,12 +41,15 @@ export class UserController {
     ) {}
 
   @Get()
+  @ApiOkResponse({ type: User, isArray: true })
   async findAll() {
     const users = await this.userService.findAll();
     return users.map(user => instanceToInstance(user));
   }
 
   @Get(':id')
+  @ApiBearerAuth('JWT-auth')
+  @ApiOkResponse({ type: User })
   @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard, UserGuard)  
   async findOne(@Param('id') id: string) {
     const user = await this.userService.findById(id);
@@ -61,6 +66,8 @@ export class UserController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth('JWT-auth')
+  @ApiOkResponse({ type: User })
   @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard, UserGuard)
   async update(@Param('id') id: string, @Body() updateUserDTO: UpdateUserDTO,){
     const user = await this.userService.update(id, updateUserDTO);
@@ -68,6 +75,8 @@ export class UserController {
   }
   
   @Delete(':id')
+  @ApiBearerAuth('JWT-auth')
+  @ApiOkResponse({ type: User })
   @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard, UserGuard)
   async delete(@Param('id') id: string) {
     const user = await this.userService.remove(id);
@@ -75,6 +84,7 @@ export class UserController {
   }
 
   @Post('avatar')
+  @ApiBearerAuth('JWT-auth')
   @ApiCreatedResponse({ type: File })
   @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard)
   @UseInterceptors(FileInterceptor('file'))

@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { instanceToInstance } from 'class-transformer';
 import { BusinessTypeService } from '@modules/business_types/businessType.service';
 
-@ApiTags('Business Type')
+@ApiTags('Business Types')
 @Controller('business-types')
 export class BusinessTypeController {
   constructor(private readonly businessTypeService: BusinessTypeService) {}

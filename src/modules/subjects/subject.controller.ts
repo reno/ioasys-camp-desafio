@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
+  ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { instanceToInstance } from 'class-transformer';
@@ -35,6 +36,7 @@ export class SubjectController {
   constructor(private subjectService: SubjectService) {}
 
   @Get()
+  @ApiOkResponse({ type: Subject, isArray: true })
   async findAll() {
     const subjects = await this.subjectService.findAll();
     return await Promise.all(subjects.map(async (subject) => {
@@ -45,6 +47,7 @@ export class SubjectController {
   }
 
   @Get(':id')
+  @ApiOkResponse({ type: Subject })
   async findOne(
     @Param('id') id: string,
     @Query() filters: ThreadFilterDTO,
@@ -62,6 +65,7 @@ export class SubjectController {
   }
 
   @Patch(':id')
+  @ApiOkResponse({ type: Subject })
   @UseGuards(AuthGuard('jwt'), AdminGuard)
   async update(@Param('id') id: string, @Body() updateSubjectDTO: UpdateSubjectDTO,){
     const subject = await this.subjectService.update(id, updateSubjectDTO);

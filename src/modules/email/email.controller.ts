@@ -14,8 +14,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserFromRequest } from '@shared/decorators/user.decorator';
 import { User } from '@shared/entities/user/user.entity';
 import { PasswordRecoverDTO } from '@shared/dtos/email/passwordRecover.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
  
 @Controller('email')
+@ApiTags('Email')
 @UseInterceptors(ClassSerializerInterceptor)
 export class EmailController {
   constructor(
@@ -30,6 +32,7 @@ export class EmailController {
   }
 
   @Get('resend-confirmation-link')
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'))
   async resendConfirmationLink(@UserFromRequest() user: User) {
     await this.emailService.resendConfirmationLink(user.id);

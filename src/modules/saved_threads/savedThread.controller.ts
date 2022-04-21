@@ -13,14 +13,11 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { PageDTO } from '@shared/dtos/page/page.dto';
 import { PageOptionsDTO } from '@shared/dtos/page/pageOptions.dto';
-import { ThreadService } from '@modules/threads/thread.service';
 import { ThreadListDTO } from '@shared/dtos/thread/threadList.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateThreadDTO } from '@shared/dtos/thread/createThread.dto';
-import { Thread } from '@shared/entities/thread/thread.entity';
 import { instanceToInstance } from 'class-transformer';
 import { UserFromRequest } from '@shared/decorators/user.decorator';
 import { User } from '@shared/entities/user/user.entity';
@@ -37,6 +34,7 @@ export class SavedThreadController {
   constructor(private readonly savedThreadService: SavedThreadService) {}
 
   @Get()
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard)
   public async findByUser(
     @UserFromRequest() user: User,
@@ -46,6 +44,7 @@ export class SavedThreadController {
   }
 
   @Post()
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard)
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ type: SavedThread })
@@ -55,6 +54,7 @@ export class SavedThreadController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard)
   async delete(@Param('id') id: string) {
     const savedThread = await this.savedThreadService.remove(id);
