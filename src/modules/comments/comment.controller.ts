@@ -12,7 +12,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { instanceToInstance } from 'class-transformer';
 import { UserFromRequest } from '@shared/decorators/user.decorator';
@@ -31,6 +31,7 @@ export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
   @Get(':id')
+  @ApiOkResponse({ type: Comment })
   public async findOne(@Param('id') id: string): Promise<Comment> {
     const comment = await this.commentService.findById(id);
     return instanceToInstance(comment);
@@ -39,6 +40,7 @@ export class CommentController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ type: Comment })
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard)
   public async create(@UserFromRequest() user: User, @Body() createCommentDTO: CreateCommentDTO) {
     const thread = await this.commentService.create(user.id, createCommentDTO);
@@ -46,6 +48,8 @@ export class CommentController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth('JWT-auth')
+  @ApiOkResponse({ type: Comment })
   @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard, CommentAuthorGuard)
   async update(@Param('id') id: string, @Body() updateCommentDTO: UpdateCommentDTO,){
     const comment = await this.commentService.update(id, updateCommentDTO);
@@ -53,6 +57,8 @@ export class CommentController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('JWT-auth')
+  @ApiOkResponse({ type: Comment })
   @UseGuards(AuthGuard('jwt'), EmailConfirmationGuard, CommentAuthorGuard)
   async delete(@Param('id') id: string) {
     const comment = await this.commentService.remove(id);

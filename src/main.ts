@@ -13,6 +13,17 @@ async function bootstrap() {
   const swaggerConfig = new DocumentBuilder()
     .setTitle('ioasys camp - Tamojunto')
     .setVersion('1')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth',
+    )
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, swaggerDocument);
