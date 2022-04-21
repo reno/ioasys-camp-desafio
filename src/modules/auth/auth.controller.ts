@@ -17,7 +17,7 @@ export class AuthController {
       @Res({ passthrough: true }) response: Response
     ) {
       const data = await this.authService.login(loginDTO);
-      response.cookie('auth-cookie', data, { httpOnly: true });
-      return { message: 'Success' };
+      response.header('Authorization', data.accessToken);
+      return { user: data.user };
     }
 }
