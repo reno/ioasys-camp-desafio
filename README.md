@@ -1,6 +1,11 @@
 # tamojunto
 Desafio final do ioasys camp 2022.
 
+
+<p align="center">
+  <img src="https://drive.google.com/uc?export=view&id=1ECVwcHPgr7QHrgEQ8ZtxJ800uDl7a9GS"/>
+</p>
+
 ## ⚙️  Tecnologias
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
@@ -50,9 +55,5 @@ EMAIL_CONNECTION_STRING
 ### Credenciais de acesso
 As credenciais dos usuários de teste são:
  
-* usuário padrão
-  - email: `renan.modenese@gmail.com`
-  - password: `Camp@123`
-* usuário admin
-  - email: `admin@mail.com` 
-  - password: `Camp@123`
+- email: `camp@ioasys.com.br`
+- password: `Camp@123`
