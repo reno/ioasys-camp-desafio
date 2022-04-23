@@ -7,6 +7,8 @@ import envVariables from '@config/env';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  
+  app.enableCors({ origin: 'http://tamojunto.vercel.app'});
 
   const logger = new Logger('NestApplication');
 
