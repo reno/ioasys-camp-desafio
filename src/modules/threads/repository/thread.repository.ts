@@ -53,6 +53,7 @@ export class ThreadRepository extends Repository<Thread> {
   async findByQueryAndCount(query: string, pageOptionsDTO: PageOptionsDTO) {
     let queryBuilder = await this.createQueryBuilder('thread')
       .leftJoinAndSelect('thread.subject', 'subject')
+      .leftJoinAndSelect('thread.user', 'user')
       .leftJoin('thread.comments', 'comments')
       .where(`to_tsvector(thread.title) @@ to_tsquery(:query)`, { query })
       .orWhere(`to_tsvector(thread.content) @@ to_tsquery(:query)`, { query })
