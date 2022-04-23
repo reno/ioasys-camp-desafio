@@ -1,10 +1,12 @@
 # tamojunto
 Desafio final do ioasys camp 2022.
 
-
+  
 <p align="center">
-  <img src="https://drive.google.com/uc?export=view&id=1ECVwcHPgr7QHrgEQ8ZtxJ800uDl7a9GS"/>
+  <img src="./.github/tamojunto.gif"/>
 </p>
+
+Tamojunto é uma comunidade no estilo de fórum, com objetivo de trocar experiências, discutir inovação, fazer benchmarking, promover parcerias e meetups. É um ponto de encontro digital, com o objetivo de fomentar o ecossistema de inovação do setor de food service.
 
 ## ⚙️  Tecnologias
 
